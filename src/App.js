@@ -30,7 +30,7 @@ export default class App extends React.Component {
       if(this.state.horns === 'all') return true;
     
       if(image.horns.toString() === this.state.horns) return true;
-      console.log(image.horns, this.state.horns);
+     
 
       return false;
     })
@@ -40,7 +40,7 @@ export default class App extends React.Component {
         key={image.title}
         image={image} />
     );
-        console.log(this.state.myFavorite);
+        
       
     return(
       <>
@@ -70,7 +70,7 @@ export default class App extends React.Component {
           </form>
 
            <form>
-            Sort images by horn amount <br/>
+            Grab them by the horns! <br/>
             <select value={this.state.horns} 
             onChange={(e) =>{
             this.setState({horns: e.target.value})
