@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 import logo from './logo.svg';
 import './App.css';
-import Header from './header.js'
+import CoolHeader from './header.js'
 import images from './data.js' 
 import ImageList from './ImageList.js'
+import ImageItem from './ImageItem.js'
 
 export default class App extends React.Component {
   state = {
@@ -12,6 +13,8 @@ export default class App extends React.Component {
   }
 
   render(){
+
+    const uniqueCategory = Array.from(new Set(images.map(image => image.keyword)));
 
     const filteredImages = images.filter((image) => {
       if(!this.state.keyword) return true; 
@@ -30,21 +33,18 @@ export default class App extends React.Component {
       if(this.state.horns === 'all') return true;
     
       if(image.horns.toString() === this.state.horns) return true;
-     
+      console.log(image.horns, this.state.horns);
 
       return false;
     })
 
-    const imagesInViewHorns = filteredHorns.map(image => 
-      <ImageList 
-        key={image.title}
-        image={image} />
-    );
-        
+    const imagesUnique = images.map((image) => {
+       return <ImageItem key={image.title} image={image}/>
+    }) 
       
     return(
       <>
-        <Header/>
+        <CoolHeader/>
         <div className="image-sorter">
           <form>
             Sort images by keyword <br/>
@@ -70,7 +70,7 @@ export default class App extends React.Component {
           </form>
 
            <form>
-            Grab them by the horns! <br/>
+           Grab them by the horns! <br/>
             <select value={this.state.horns} 
             onChange={(e) =>{
             this.setState({horns: e.target.value})
@@ -88,7 +88,7 @@ export default class App extends React.Component {
         </div>
 
         <div className='image-view'>
-          {imagesInViewHorns}
+          <ImageList images={filteredHorns}/>
         </div> 
       </>
     );
