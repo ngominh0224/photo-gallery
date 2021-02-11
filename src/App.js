@@ -4,6 +4,7 @@ import './App.css';
 import Header from './header.js'
 import images from './data.js' 
 import ImageList from './ImageList.js'
+import ImageItem from './ImageItem.js'
 
 export default class App extends React.Component {
   state = {
@@ -12,6 +13,7 @@ export default class App extends React.Component {
   }
 
   render(){
+
 
     const filteredImages = images.filter((image) => {
       if(!this.state.keyword) return true; 
