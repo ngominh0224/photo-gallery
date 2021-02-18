@@ -24,23 +24,22 @@ export default class App extends React.Component {
   };
 
   render() {
-    const filteredImages = images.filter((image) => {
-      if (!this.state.keyword) return true;
+    let theKey = this.state.keyword;
+    let theHorn = this.state.horns;
+    const filteredHorns = images.filter((image) => {
+      if (!theKey && !theHorn) return true;
 
-      if (this.state.keyword === 'all') return true;
+      if (theKey && !theHorn) {
+        if (image.keyword === theKey) return true;
+      }
 
-      if (image.keyword === this.state.keyword) return true;
+      if (!theKey && theHorn) {
+        if (image.horns === theHorn) return true;
+      }
 
-      return false;
-    });
-
-    const filteredHorns = filteredImages.filter((image) => {
-      if (!this.state.horns) return true;
-
-      if (this.state.horns === 'all') return true;
-
-      if (image.horns.toString() === this.state.horns) return true;
-      console.log(image.horns, this.state.horns);
+      if (theKey && theHorn) {
+        if (image.keyword === theKey && image.horns === theHorn) return true;
+      }
 
       return false;
     });
