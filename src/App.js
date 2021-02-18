@@ -1,95 +1,85 @@
-import React from 'react'
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-import CoolHeader from './header.js'
-import images from './data.js' 
-import ImageList from './ImageList.js'
-import ImageItem from './ImageItem.js'
+import Header from './header.js';
+import images from './data.js';
+import ImageList from './ImageList.js';
+import Dropdown from './dropdown.js';
 
 export default class App extends React.Component {
   state = {
     keyword: '',
-    horns: '', 
-  }
+    horns: '',
+  };
 
-  render(){
+  handleKeywordChange = (e) => {
+    this.setState({
+      keyword: e.target.value,
+    });
+  };
 
-    const uniqueCategory = Array.from(new Set(images.map(image => image.keyword)));
+  handleHornsChange = (e) => {
+    this.setState({
+      horns: Number(e.target.value),
+    });
+  };
 
+  render() {
     const filteredImages = images.filter((image) => {
-      if(!this.state.keyword) return true; 
-    
-      if(this.state.keyword === 'all') return true;
-    
-      if(image.keyword === this.state.keyword) return true;
+      if (!this.state.keyword) return true;
+
+      if (this.state.keyword === 'all') return true;
+
+      if (image.keyword === this.state.keyword) return true;
 
       return false;
-    })
+    });
 
     const filteredHorns = filteredImages.filter((image) => {
+      if (!this.state.horns) return true;
 
-      if(!this.state.horns) return true; 
-    
-      if(this.state.horns === 'all') return true;
-    
-      if(image.horns.toString() === this.state.horns) return true;
+      if (this.state.horns === 'all') return true;
+
+      if (image.horns.toString() === this.state.horns) return true;
       console.log(image.horns, this.state.horns);
 
       return false;
-    })
+    });
 
-    const imagesUnique = images.map((image) => {
-       return <ImageItem key={image.title} image={image}/>
-    }) 
-      
-    return(
+    return (
       <>
-        <CoolHeader/>
+        <Header />
         <div className="image-sorter">
           <form>
-            Sort images by keyword <br/>
-            <select value={this.state.keyword} 
-            onChange={(e) =>{
-            this.setState({keyword: e.target.value})
-            }}
-            >
-              <option value='all'>All</option>
-              <option value='addax'>Addax</option>
-              <option value='chameleon'>Chameleon</option>
-              <option value='dragon'>Dragon</option>
-              <option value='lizard'>Lizard</option>
-              <option value='markhor'>Markhor</option>
-              <option value='mouflon'>Mouflon</option>
-              <option value='narwhal'>Narwhal</option>
-              <option value='rhino'>Rhino</option>
-              <option value='triceratops'>Triceratops</option>
-              <option value='unicorn'>Unicorn</option>
-              <option value='unilego'>Unilego</option>
-            </select>
-            
-          </form>
-
-           <form>
-           Grab them by the horns! <br/>
-            <select value={this.state.horns} 
-            onChange={(e) =>{
-            this.setState({horns: e.target.value})
-
-            }}
-            >
-              <option value='all'>All</option>
-              <option value='1'>Single horn</option>
-              <option value='2'>Dual horn</option>
-              <option value='3'>Triple horn</option>
-              <option value='100'>Too many horns</option>
-            </select><br/>
+            Sort images by keyword <br />
+            <Dropdown
+              currentValue={this.state.keyword}
+              handleChange={this.handleKeywordChange}
+              options={[
+                'narwhal',
+                'rhino',
+                'mouflon',
+                'markhor',
+                'triceratops',
+                'addax',
+                'chameleon',
+                'lizard',
+                'dragon',
+              ]}
+            />
+            <label>horns: </label>
+            <Dropdown
+              currentValue={this.state.horns}
+              handleChange={this.handleHornsChange}
+              options={[1, 2, 3, 100]}
+            />
+            <br />
             <button>View All</button>
-          </form> 
+          </form>
         </div>
 
-        <div className='image-view'>
-          <ImageList images={filteredHorns}/>
-        </div> 
+        <div className="image-view">
+          <ImageList images={filteredHorns} />
+        </div>
       </>
     );
   }
